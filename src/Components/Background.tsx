@@ -1,9 +1,13 @@
-import { Card, ListGroup, Button, Stack, CloseButton } from "react-bootstrap";
+import { Card, ListGroup, Button, Stack } from "react-bootstrap";
+import { AddTask } from "./AddTask";
+import { useState } from "react";
 
 export const Background = () => {
-  const data = ["Book Tickets", "Go Shopping", "Attend meeting"];
+  const data = [];
 
-  const listData = data.map((task) => (
+  const [tasks, setTasks] = useState<string[]>(["Book Tickets", "Go Shopping", "Attend meeting"])
+
+  const listData = tasks.map((task) => (
     <ListGroup.Item>
       <Stack direction="horizontal" className="d-flex justify-content-between">
         {task}
@@ -20,6 +24,11 @@ export const Background = () => {
     </ListGroup.Item>
   ));
 
+  const addTask = (newTask: string) => {
+    setTasks([...tasks, newTask])
+  }
+
+
   return (
     <div className="ms-4">
       <Card className="mb-4" style={{ width: "18rem" }}>
@@ -28,8 +37,8 @@ export const Background = () => {
         </Card.Header>
         <ListGroup variant="flush">{listData}</ListGroup>
       </Card>
-      <div className="d-flex justify-content-end">
-        <Button>Add</Button>
+      <div>
+        <AddTask addTask={addTask} />
       </div>
     </div>
   );
