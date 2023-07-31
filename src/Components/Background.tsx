@@ -1,33 +1,57 @@
 import { Card, ListGroup, Button, Stack } from "react-bootstrap";
 import { AddTask } from "./AddTask";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { NewTask } from "../App";
 
 export const Background = () => {
-  const data = [];
+  const [tasks, setTasks] = useState<NewTask[]>([]);
 
-  const [tasks, setTasks] = useState<string[]>(["Book Tickets", "Go Shopping", "Attend meeting"])
-
-  const listData = tasks.map((task) => (
-    <ListGroup.Item>
-      <Stack direction="horizontal" className="d-flex justify-content-between">
-        {task}
+  const listData = tasks.length ? (
+    tasks.map((task) => (
+      <ListGroup.Item key={task.id}>
         <Stack
           direction="horizontal"
-          className="d-flex justify-content-end"
-          gap={2}
+          className="d-flex justify-content-between"
         >
-          <Button>-</Button>
-          <Button>x</Button>
-
+          {task.value}
+          <Stack
+            direction="horizontal"
+            className="d-flex justify-content-end"
+            gap={2}
+          >
+            <Button>-</Button>
+            <Button>x</Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </ListGroup.Item>
-  ));
+      </ListGroup.Item>
+    ))
+  ) : (
+    <ListGroup.Item> No Pending Tasks :)</ListGroup.Item>
+  );
 
-  const addTask = (newTask: string) => {
-    setTasks([...tasks, newTask])
-  }
+  const addTask = (newTask: NewTask) => {
+    setTasks([...tasks, newTask]);
+  };
 
+  //   useEffect(() => {
+  //     const storedTasks = localStorage.getItem("tasks");
+  //     if (storedTasks !== null) {
+  //       setTasks(JSON.parse(storedTasks));
+  //     }
+  //   }, []);
+
+  useEffect(() => {
+    const storedTasksString = localStorage.getItem('tasks');
+    if (storedTasksString !== null) {
+      const storedTasks: NewTask[] = JSON.parse(storedTasksString);
+      setTasks(storedTasks);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(tasks)
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   return (
     <div className="ms-4">

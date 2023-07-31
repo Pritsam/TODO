@@ -1,37 +1,50 @@
-import { FormEvent, useRef } from 'react'
-import { Button, Col, Form, Row, Stack } from 'react-bootstrap'
+import { FormEvent, useState } from "react";
+import { Button, Col, Form, Row, Stack } from "react-bootstrap";
+import { NewTask } from "../App";
 
 type AddTaskProps = {
-    addTask: (newTask: string) => void;
-  };
+  addTask: (newTask: NewTask) => void;
+};
 
 export const AddTask = ({ addTask }: AddTaskProps) => {
+  const [taskValue, setTaskValue] = useState<string>("");
 
-    const taskRef = useRef<HTMLInputElement>(null)
-
-    const handleSubmit = (e: FormEvent) => {
-
-        e.preventDefault();
-        const newTask = taskRef.current!.value;
-        addTask(newTask)
-        taskRef.current!.value=''
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    
+    if (taskValue!.trim() !== "") {
+      const newTask = {
+        id: Date.now(),
+        value: taskValue,
+      };
+      addTask(newTask);
+      setTaskValue("");
     }
+  };
 
-    return (
-        <Form onSubmit={handleSubmit}>
-            <Stack direction="horizontal" className="d-flex justify-content-between">
-                <Row>
-                    <Col>
-                        <Form.Group controlId="title">
-                            <Form.Control required ref={taskRef} />
-                        </Form.Group>
-                    </Col>
-                </Row>
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTaskValue(e.target.value);
+  };
 
-                <Button onClick={handleSubmit}>Add</Button>
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Stack direction="horizontal" className="d-flex justify-content-between">
+        <Row>
+          <Col>
+            <Form.Group controlId="title">
+              <Form.Control
+                required
+                value={taskValue}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
 
-            </Stack>
-
-        </Form>
-    )
-}
+        <Button onClick={handleSubmit} disabled={!taskValue}>
+          Add
+        </Button>
+      </Stack>
+    </Form>
+  );
+};

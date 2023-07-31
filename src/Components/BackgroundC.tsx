@@ -14,7 +14,7 @@ export const BackgroundC = () => {
         </ListGroup>
       </Card>
       <div className="d-flex justify-content-end">
-        <Button className="">Add</Button>
+        <Button>Add</Button>
       </div>
     </div>
   );
