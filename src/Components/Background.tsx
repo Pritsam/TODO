@@ -33,14 +33,8 @@ export const Background = () => {
     setTasks([...tasks, newTask]);
   };
 
-  //   useEffect(() => {
-  //     const storedTasks = localStorage.getItem("tasks");
-  //     if (storedTasks !== null) {
-  //       setTasks(JSON.parse(storedTasks));
-  //     }
-  //   }, []);
-
   useEffect(() => {
+    console.log("first use effect")
     const storedTasksString = localStorage.getItem('tasks');
     if (storedTasksString !== null) {
       const storedTasks: NewTask[] = JSON.parse(storedTasksString);
@@ -49,8 +43,10 @@ export const Background = () => {
   }, []);
 
   useEffect(() => {
-    console.log(tasks)
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    console.log("second use effect")
+    if (tasks.length > 0) {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
   }, [tasks]);
 
   return (
