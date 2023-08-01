@@ -1,10 +1,10 @@
 import { Card, ListGroup, Button, Stack } from "react-bootstrap";
 import { AddTask } from "./AddTask";
 import { useEffect, useState } from "react";
-import { NewTask } from "../App";
+import { Task } from "../App";
 
-export const Background = () => {
-  const [tasks, setTasks] = useState<NewTask[]>([]);
+export const Pending = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const listData = tasks.length ? (
     tasks.map((task) => (
@@ -19,8 +19,8 @@ export const Background = () => {
             className="d-flex justify-content-end"
             gap={2}
           >
-            <Button>-</Button>
-            <Button>x</Button>
+            <Button onClick={() => onComplete(task.id)}>-</Button>
+            <Button onClick={() => onRemove(task.id)}>x</Button>
           </Stack>
         </Stack>
       </ListGroup.Item>
@@ -29,25 +29,34 @@ export const Background = () => {
     <ListGroup.Item> No Pending Tasks :)</ListGroup.Item>
   );
 
-  const addTask = (newTask: NewTask) => {
+  const addTask = (newTask: Task) => {
     setTasks([...tasks, newTask]);
   };
 
+  const onRemove = (taskID: number): void => {
+    setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskID))
+  }
+
+  const onComplete=(taskID: number): void=>{
+    setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskID))
+  }
+
   useEffect(() => {
-    console.log("first use effect")
+    // console.log("first use effect")
     const storedTasksString = localStorage.getItem('tasks');
     if (storedTasksString !== null) {
-      const storedTasks: NewTask[] = JSON.parse(storedTasksString);
+      const storedTasks: Task[] = JSON.parse(storedTasksString);
       setTasks(storedTasks);
     }
   }, []);
 
   useEffect(() => {
-    console.log("second use effect")
+    // console.log("second use effect")
     if (tasks.length > 0) {
       localStorage.setItem('tasks', JSON.stringify(tasks));
     }
   }, [tasks]);
+
 
   return (
     <div className="ms-4">

@@ -1,9 +1,9 @@
 import { FormEvent, useState } from "react";
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { NewTask } from "../App";
+import { Task } from "../App";
 
 type AddTaskProps = {
-  addTask: (newTask: NewTask) => void;
+  addTask: (newTask: Task) => void;
 };
 
 export const AddTask = ({ addTask }: AddTaskProps) => {

@@ -1,11 +1,12 @@
 import { Card, ListGroup, Button } from "react-bootstrap";
 
-export const BackgroundC = () => {
+export const Completed = () => {
+
   return (
     <div className="ms-4">
       <Card className="mb-4" style={{ width: "18rem" }}>
         <Card.Header className="d-flex justify-content-center">
-          Pending
+          Completed
         </Card.Header>
         <ListGroup variant="flush">
           <ListGroup.Item>Cras justo odio</ListGroup.Item>

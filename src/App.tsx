@@ -1,10 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Background } from "./Components/Background";
+import { Pending } from "./Components/Pending";
 import { Header } from "./Components/Header";
-import { BackgroundC } from "./Components/BackgroundC";
+import { Completed } from "./Components/Completed";
 import { Stack } from "react-bootstrap";
 
-export type NewTask = {
+export type Task = {
   id: number;
   value: string;
 };
@@ -14,8 +14,8 @@ function App() {
     <div>
       <Header />
       <Stack className="justify-content-evenly" direction="horizontal">
-        <Background />
-        <BackgroundC />
+        <Pending />
+        <Completed />
       </Stack>
     </div>
   );
