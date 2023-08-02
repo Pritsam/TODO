@@ -1,11 +1,18 @@
 import { Card, ListGroup, Button, Stack } from "react-bootstrap";
 import { AddTask } from "./AddTask";
-import { useEffect, useState } from "react";
 import { Task } from "../App";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask, completeTask, removeTask } from "../Store/taskSlice";
+import { RootState } from "../Store/store";
 
 export const Pending = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
 
+  const dispatch = useDispatch();
+  const tasks = useSelector((state:RootState) => state.task.tasks);
+
+  console.log(tasks)
+
+  
   const listData = tasks.length ? (
     tasks.map((task) => (
       <ListGroup.Item key={task.id}>
@@ -19,8 +26,8 @@ export const Pending = () => {
             className="d-flex justify-content-end"
             gap={2}
           >
-            <Button onClick={() => onComplete(task.id)}>-</Button>
-            <Button onClick={() => onRemove(task.id)}>x</Button>
+            <Button onClick={()=> onCompleteHandler(task)}>-</Button>
+            <Button onClick={() => onRemoveHandler(task)}>x</Button>
           </Stack>
         </Stack>
       </ListGroup.Item>
@@ -29,33 +36,37 @@ export const Pending = () => {
     <ListGroup.Item> No Pending Tasks :)</ListGroup.Item>
   );
 
-  const addTask = (newTask: Task) => {
-    setTasks([...tasks, newTask]);
+  const addTaskHandler = (newTask: Task): void => {
+    dispatch(addTask(newTask))
   };
 
-  const onRemove = (taskID: number): void => {
-    setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskID))
+  const onRemoveHandler = (removedTask: Task): void => {
+    dispatch(removeTask(removedTask))
   }
 
-  const onComplete=(taskID: number): void=>{
-    setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskID))
+  const onCompleteHandler=(completedTask: Task): void =>{
+      dispatch(completeTask(completedTask))
   }
 
-  useEffect(() => {
-    // console.log("first use effect")
-    const storedTasksString = localStorage.getItem('tasks');
-    if (storedTasksString !== null) {
-      const storedTasks: Task[] = JSON.parse(storedTasksString);
-      setTasks(storedTasks);
-    }
-  }, []);
+  // const onComplete=(taskID: number): void=>{
+  //   setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskID))
+  // }
 
-  useEffect(() => {
-    // console.log("second use effect")
-    if (tasks.length > 0) {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-  }, [tasks]);
+  // useEffect(() => {
+  //   // console.log("first use effect")
+  //   const storedTasksString = localStorage.getItem('tasks');
+  //   if (storedTasksString !== null) {
+  //     const storedTasks: Task[] = JSON.parse(storedTasksString);
+  //     setTasks(storedTasks);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   // console.log("second use effect")
+  //   if (tasks.length > 0) {
+  //     localStorage.setItem('tasks', JSON.stringify(tasks));
+  //   }
+  // }, [tasks]);
 
 
   return (
@@ -67,7 +78,7 @@ export const Pending = () => {
         <ListGroup variant="flush">{listData}</ListGroup>
       </Card>
       <div>
-        <AddTask addTask={addTask} />
+        <AddTask addTask={addTaskHandler} />
       </div>
     </div>
   );

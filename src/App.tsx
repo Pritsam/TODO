@@ -9,6 +9,11 @@ export type Task = {
   value: string;
 };
 
+export interface TaskState {
+  tasks: Task[];
+  completedTasks: Task[];
+}
+
 function App() {
   return (
     <div>
